@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -13,7 +13,7 @@ type Residue struct {
 }
 
 // Set value from little-endian array of uint64
-func (z *Residue) FromUint64(m *Modulus, x [4]uint64) (*Residue) {
+func (z *Residue) FromUint64(m *Modulus, x [4]uint64) *Residue {
 
 	if m.m[3] == 0 {
 		panic("Modulus < 2^192")
@@ -24,13 +24,12 @@ func (z *Residue) FromUint64(m *Modulus, x [4]uint64) (*Residue) {
 	return z
 }
 
-
-func (z *Residue) ToUint64() ([4]uint64) {
+func (z *Residue) ToUint64() [4]uint64 {
 	z.reduce4() // Reduce to canonical residue
 	return z.r
 }
 
-func (z *Residue) Cpy(x *Residue) (*Residue) {
+func (z *Residue) Cpy(x *Residue) *Residue {
 	z.m = x.m
 	z.r = x.r
 	return z

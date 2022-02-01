@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -9,13 +9,13 @@ import (
 )
 
 // reduce8 computes a 256-bit residue of x modulo z.m and stores it in z
-func (z *Residue) reduce8(x [8]uint64) (*Residue) {
+func (z *Residue) reduce8(x [8]uint64) *Residue {
 
 	// NB: Most variable names in the comments match the pseudocode for
 	// 	Barrett reduction in the Handbook of Applied Cryptography.
 
 	mu := z.m.mu
-	m  := z.m.m
+	m := z.m.m
 
 	// q1 = x/2^192
 

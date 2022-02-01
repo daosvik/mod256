@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,7 +8,7 @@ import (
 	. "math/bits"
 )
 
-func (z *Residue) Mul(x *Residue) (*Residue) {
+func (z *Residue) Mul(x *Residue) *Residue {
 	if z == x {
 		return z.Sqr()
 	}
