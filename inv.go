@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -14,7 +14,7 @@ import (
 func (z *Residue) Inv() bool {
 
 	var (
-		b, c,	// Borrow & carry
+		b, c, // Borrow & carry
 		a4, a3, a2, a1, a0,
 		b4, b3, b2, b1, b0,
 		c4, c3, c2, c1, c0,

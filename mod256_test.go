@@ -1,15 +1,15 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
 package mod256
 
 import (
-	"testing"
 	"crypto/rand"
 	"fmt"
 	"math/big"
 	"math/bits"
+	"testing"
 )
 
 // Test values are grouped as follows
@@ -22,8 +22,8 @@ import (
 // Only values with m[3] > 0 are used as moduli.
 
 var (
-	testval [640][4]uint64
-	test_all, test_fixed, test_random	[][4]uint64
+	testval                           [640][4]uint64
+	test_all, test_fixed, test_random [][4]uint64
 )
 
 func init() {
@@ -117,7 +117,7 @@ func init() {
 }
 
 func TestModulusFromToUint64_OK(t *testing.T) {
-	var mod	Modulus
+	var mod Modulus
 
 	test_mod := test_all
 
@@ -329,9 +329,9 @@ func testExp(a, b *Residue) {
 
 func TestResidueCompatibility(t *testing.T) {
 	var (
-		m1, m2	Modulus
-		r1, r2	Residue
-		count	int
+		m1, m2 Modulus
+		r1, r2 Residue
+		count  int
 	)
 
 	test_mod := test_fixed
@@ -373,10 +373,10 @@ func TestResidueCompatibility(t *testing.T) {
 
 func TestResidueFromToUint64(t *testing.T) {
 	var (
-		mod		Modulus
-		r		Residue
-		bm, b, bmod	big.Int
-		count		int
+		mod         Modulus
+		r           Residue
+		bm, b, bmod big.Int
+		count       int
 	)
 
 	test_mod := test_all
@@ -420,11 +420,11 @@ func TestReciprocal(t *testing.T) {
 	}
 
 	var (
-		count	int
-		str_x, str_m, str_mu string
+		count                              int
+		str_x, str_m, str_mu               string
 		big_1, big_x, big_m, big_mu, big_e big.Int
-		m	[4]uint64
-		e, mu	[5]uint64
+		m                                  [4]uint64
+		e, mu                              [5]uint64
 	)
 
 	m = [4]uint64{0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001}
@@ -535,11 +535,11 @@ func TestReciprocal(t *testing.T) {
 
 func TestEqNeq(t *testing.T) {
 	var (
-		m1, m2	Modulus
-		r	[4]Residue
-		a, b, c, x, y	Residue
-		u, v	bool
-		count	int
+		m1, m2        Modulus
+		r             [4]Residue
+		a, b, c, x, y Residue
+		u, v          bool
+		count         int
 	)
 
 	// All unequal
@@ -653,10 +653,10 @@ func TestEqNeq(t *testing.T) {
 
 func TestReflexivity(t *testing.T) {
 	var (
-		mod	Modulus
-		a	Residue
-		u	bool
-		count	int
+		mod   Modulus
+		a     Residue
+		u     bool
+		count int
 	)
 
 	test_mod := test_all
@@ -692,10 +692,10 @@ func TestReflexivity(t *testing.T) {
 
 func TestSymmetry(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b	Residue
-		u, v	bool
-		count	int
+		mod   Modulus
+		a, b  Residue
+		u, v  bool
+		count int
 	)
 
 	test_mod := test_all
@@ -753,9 +753,9 @@ func TestTransitivity(t *testing.T) {
 
 func TestAdditiveIdentity(t *testing.T) {
 	var (
-		mod	Modulus
-		zero, zero_m, zero_p, a, u, v, w, x, y, z	Residue
-		count	int
+		mod                                       Modulus
+		zero, zero_m, zero_p, a, u, v, w, x, y, z Residue
+		count                                     int
 	)
 
 	test_mod := test_all
@@ -804,9 +804,9 @@ func TestAdditiveIdentity(t *testing.T) {
 
 func TestMultiplicativeIdentity(t *testing.T) {
 	var (
-		mod	Modulus
-		zero, one, one_m, one_p, a, u, v, w, x, y, z	Residue
-		count	int
+		mod                                          Modulus
+		zero, one, one_m, one_p, a, u, v, w, x, y, z Residue
+		count                                        int
 	)
 
 	test_mod := test_all
@@ -857,9 +857,9 @@ func TestMultiplicativeIdentity(t *testing.T) {
 
 func TestAdditiveInverse(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, u, v, w	Residue
-		count	int
+		mod           Modulus
+		a, b, u, v, w Residue
+		count         int
 	)
 
 	test_mod := test_all
@@ -968,9 +968,9 @@ func TestAdditiveInverse(t *testing.T) {
 func TestMultiplicativeInverse(t *testing.T) {
 
 	var (
-		mod	Modulus
-		a, u, v, one	Residue
-		invertible, noninvertible	int
+		mod                       Modulus
+		a, u, v, one              Residue
+		invertible, noninvertible int
 	)
 
 	test_mod := test_fixed
@@ -1015,9 +1015,9 @@ func TestMultiplicativeInverse(t *testing.T) {
 
 func TestCommutativeAdd(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, u, v	Residue
-		count	int
+		mod        Modulus
+		a, b, u, v Residue
+		count      int
 	)
 
 	test_mod := test_random
@@ -1058,9 +1058,9 @@ func TestCommutativeAdd(t *testing.T) {
 
 func TestCommutativeMul(t *testing.T) {
 	var (
-		m	Modulus
-		a, b, u, v	Residue
-		count	int
+		m          Modulus
+		a, b, u, v Residue
+		count      int
 	)
 
 	test_mod := test_random
@@ -1096,11 +1096,11 @@ func TestCommutativeMul(t *testing.T) {
 					v.Mul(&a)
 
 					t.Errorf("ERROR: %v/%v/%v\n", i, j, k)
-					t.Errorf("a   = 0x%016x%016x%016x%016x", a.r[3], a.r[2], a.r[1], a.r[0]);
-					t.Errorf("b   = 0x%016x%016x%016x%016x", b.r[3], b.r[2], b.r[1], b.r[0]);
-					t.Errorf("m   = 0x%016x%016x%016x%016x", m.m[3], m.m[2], m.m[1], m.m[0]);
-					t.Errorf("a*b = 0x%016x%016x%016x%016x", u.r[3], u.r[2], u.r[1], u.r[0]);
-					t.Fatalf("b*a = 0x%016x%016x%016x%016x", v.r[3], v.r[2], v.r[1], v.r[0]);
+					t.Errorf("a   = 0x%016x%016x%016x%016x", a.r[3], a.r[2], a.r[1], a.r[0])
+					t.Errorf("b   = 0x%016x%016x%016x%016x", b.r[3], b.r[2], b.r[1], b.r[0])
+					t.Errorf("m   = 0x%016x%016x%016x%016x", m.m[3], m.m[2], m.m[1], m.m[0])
+					t.Errorf("a*b = 0x%016x%016x%016x%016x", u.r[3], u.r[2], u.r[1], u.r[0])
+					t.Fatalf("b*a = 0x%016x%016x%016x%016x", v.r[3], v.r[2], v.r[1], v.r[0])
 				}
 
 				count++
@@ -1112,9 +1112,9 @@ func TestCommutativeMul(t *testing.T) {
 
 func TestAssociativeAdd(t *testing.T) {
 	var (
-		m	Modulus
-		a, b, c, u, v	Residue
-		count	int
+		m             Modulus
+		a, b, c, u, v Residue
+		count         int
 	)
 
 	test_mod := test_random
@@ -1161,9 +1161,9 @@ func TestAssociativeAdd(t *testing.T) {
 
 func TestAssociativeMul(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, c, u, v	Residue
-		count	int
+		mod           Modulus
+		a, b, c, u, v Residue
+		count         int
 	)
 
 	test_mod := test_random
@@ -1210,9 +1210,9 @@ func TestAssociativeMul(t *testing.T) {
 
 func TestDistributiveLeft(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, c, u, v, w	Residue
-		count	int
+		mod              Modulus
+		a, b, c, u, v, w Residue
+		count            int
 	)
 
 	test_mod := test_random
@@ -1266,9 +1266,9 @@ func TestDistributiveLeft(t *testing.T) {
 
 func TestDistributiveRight(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, c, u, v	Residue
-		count	int
+		mod           Modulus
+		a, b, c, u, v Residue
+		count         int
 	)
 
 	test_mod := test_random
@@ -1321,9 +1321,9 @@ func TestDistributiveRight(t *testing.T) {
 
 func TestDouble(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, u, v	Residue
-		count	int
+		mod        Modulus
+		a, b, u, v Residue
+		count      int
 	)
 
 	test_mod := test_all
@@ -1415,9 +1415,9 @@ func TestDouble(t *testing.T) {
 
 func TestSquare(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, u, v, w	Residue
-		count	int
+		mod           Modulus
+		a, b, u, v, w Residue
+		count         int
 	)
 
 	test_mod := test_all
@@ -1522,10 +1522,10 @@ func TestSquare(t *testing.T) {
 
 func TestExponentiation(t *testing.T) {
 	var (
-		mod	Modulus
-		a, b, c	Residue
-		eb	ExpBase
-		count	int
+		mod     Modulus
+		a, b, c Residue
+		eb      ExpBase
+		count   int
 	)
 
 	test_ops := test_fixed
@@ -1573,11 +1573,11 @@ func TestExponentiation(t *testing.T) {
 	t.Logf("%v tests\n", count)
 }
 
-var	(
+var (
 	nistp256 [4]uint64
 	nistp224 [4]uint64
-	m Modulus
-	x, y Residue
+	m        Modulus
+	x, y     Residue
 )
 
 func BenchmarkMod256(b *testing.B) {
@@ -1681,9 +1681,9 @@ func benchmarkMul(b *testing.B) {
 
 func benchmarkInv(b *testing.B) {
 	var (
-		mod	Modulus
-		a	Residue
-		count	int
+		mod   Modulus
+		a     Residue
+		count int
 	)
 
 	test_ops := test_all
@@ -1709,9 +1709,9 @@ OuterLoop:
 
 func benchmarkExp(b *testing.B) {
 	var (
-		mod	Modulus
-		a	Residue
-		count	int
+		mod   Modulus
+		a     Residue
+		count int
 	)
 
 	test_mod := test_all
@@ -1748,10 +1748,10 @@ OuterLoop:
 
 func benchmarkExpPrecomp(b *testing.B) {
 	var (
-		mod	Modulus
-		a, u	Residue
-		eb	ExpBase
-		count	int
+		mod   Modulus
+		a, u  Residue
+		eb    ExpBase
+		count int
 	)
 
 	test_mod := test_all

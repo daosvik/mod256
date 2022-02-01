@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -6,12 +6,12 @@ package mod256
 
 import (
 	. "math/bits"
-//	"fmt"
+	//	"fmt"
 )
 
 // reduce4 computes the least non-negative residue of z
 // and stores it back in z
-func (z *Residue) reduce4() (*Residue) {
+func (z *Residue) reduce4() *Residue {
 
 	// NB: Most variable names in the comments match the pseudocode for
 	// 	Barrett reduction in the Handbook of Applied Cryptography.

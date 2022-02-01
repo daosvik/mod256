@@ -1,17 +1,17 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
 package mod256
 
 type ExpBase struct {
-	t	[16]Residue
+	t [16]Residue
 }
 
 // Initialise ExpBase
 // 192 squarings, 11 multiplications
 
-func (z *ExpBase) FromResidue(x *Residue) (*ExpBase) {
+func (z *ExpBase) FromResidue(x *Residue) *ExpBase {
 	var t Residue
 
 	t.Cpy(x)
@@ -56,7 +56,7 @@ func (z *ExpBase) FromResidue(x *Residue) (*ExpBase) {
 // z = x^y
 // 63 squarings, 63 multiplications
 
-func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) (*Residue) {
+func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) *Residue {
 
 	j :=	((y[3] >> 60) & 8) |
 		((y[2] >> 61) & 4) |
@@ -85,8 +85,8 @@ func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) (*Residue) {
 // z = z^x
 // 255 squarings, 74 multiplications
 
-func (z *Residue) Exp(x [4]uint64) (*Residue) {
-	var eb	ExpBase
+func (z *Residue) Exp(x [4]uint64) *Residue {
+	var eb ExpBase
 
 	eb.FromResidue(z)
 	z.ExpPrecomp(&eb, x)

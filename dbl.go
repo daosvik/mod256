@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,7 +8,7 @@ import (
 	. "math/bits"
 )
 
-func (z *Residue) Dbl() (*Residue) {
+func (z *Residue) Dbl() *Residue {
 
 	t0, c := Add64(z.r[0], z.r[0], 0)
 	t1, c := Add64(z.r[1], z.r[1], c)

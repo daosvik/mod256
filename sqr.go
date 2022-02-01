@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,7 +8,7 @@ import (
 	. "math/bits"
 )
 
-func (z *Residue) Sqr() (*Residue) {
+func (z *Residue) Sqr() *Residue {
 	// Squaring
 
 	var c, t0, t1, q0, q1, q2, q3, q4, q5, q6, q7 uint64

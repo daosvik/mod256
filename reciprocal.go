@@ -1,4 +1,4 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
@@ -42,8 +42,8 @@ func reciprocal(m [4]uint64) (mu [5]uint64) {
 	// Maximise division precision by left-aligning divisor
 
 	var (
-		y [4]uint64	// left-aligned copy of m
-		r0 uint32	// estimate of 2^31/y
+		y  [4]uint64 // left-aligned copy of m
+		r0 uint32    // estimate of 2^31/y
 	)
 
 	y = shiftleft256(m, uint(s))	// 1/2 < y < 1

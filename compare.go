@@ -1,10 +1,10 @@
-// mod256: Arithmetic modulo 193-256 bit moduli 
+// mod256: Arithmetic modulo 193-256 bit moduli
 // Copyright 2021-2022 Dag Arne Osvik
 // SPDX-License-Identifier: BSD-3-Clause
 
 package mod256
 
-func (x *Residue) Eq(y *Residue) (bool) {
+func (x *Residue) Eq(y *Residue) bool {
 	m := x.m.m[0] ^ y.m.m[0]
 	m |= x.m.m[1] ^ y.m.m[1]
 	m |= x.m.m[2] ^ y.m.m[2]
@@ -25,7 +25,7 @@ func (x *Residue) Eq(y *Residue) (bool) {
 	return r == 0
 }
 
-func (x *Residue) Neq(y *Residue) (bool) {
+func (x *Residue) Neq(y *Residue) bool {
 	m := x.m.m[0] ^ y.m.m[0]
 	m |= x.m.m[1] ^ y.m.m[1]
 	m |= x.m.m[2] ^ y.m.m[2]
