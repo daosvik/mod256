@@ -8,6 +8,7 @@ import (
 	. "math/bits"
 )
 
+// Sub computes the sum of a residue and the negation of a second residue.
 func (z *Residue) Sub(x *Residue) *Residue {
 	if z.m != x.m {
 		if z.m.m != x.m.m {

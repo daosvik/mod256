@@ -8,6 +8,7 @@ import (
 	. "math/bits"
 )
 
+// Add computes the sum of two residues.
 func (z *Residue) Add(x *Residue) *Residue {
 	if z.m != x.m {
 		if z.m.m != x.m.m {

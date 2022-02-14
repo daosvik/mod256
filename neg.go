@@ -8,6 +8,7 @@ import (
 	. "math/bits"
 )
 
+// Neg computes the negation (additive inverse) of a residue.
 func (z *Residue) Neg() *Residue {
 	t0, b := Sub64(z.m.mmu1[0], z.r[0], 0)
 	t1, b := Sub64(z.m.mmu1[1], z.r[1], b)

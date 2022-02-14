@@ -4,13 +4,13 @@
 
 package mod256
 
+// The ExpBase type contains lookup tables allowing fast repeated modular exponentiation with the same base value.
 type ExpBase struct {
 	t [16]Residue
 }
 
-// Initialise ExpBase
-// 192 squarings, 11 multiplications
-
+// FromResidue initialises ExpBase from a residue.
+// It performs 192 squarings and 11 multiplications.
 func (z *ExpBase) FromResidue(x *Residue) *ExpBase {
 	var t Residue
 
@@ -53,9 +53,8 @@ func (z *ExpBase) FromResidue(x *Residue) *ExpBase {
 	return z
 }
 
-// z = x^y
-// 63 squarings, 63 multiplications
-
+// ExpPrecomp takes an ExpBase computed from the base value, a 256-bit integer as the exponent, and performs modular exponentiation.
+// It performs 63 squarings and 63 multiplications.
 func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) *Residue {
 
 	j :=	((y[3] >> 60) & 8) |
@@ -82,9 +81,8 @@ func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) *Residue {
 	return z
 }
 
-// z = z^x
-// 255 squarings, 74 multiplications
-
+// Exp performs modular exponentiation without storing precomputed values for later use.
+// It performs 255 squarings and 74 multiplications.
 func (z *Residue) Exp(x [4]uint64) *Residue {
 	var eb ExpBase
 

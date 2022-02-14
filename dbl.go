@@ -8,6 +8,7 @@ import (
 	. "math/bits"
 )
 
+// Dbl computes the double of a residue.
 func (z *Residue) Dbl() *Residue {
 
 	t0, c := Add64(z.r[0], z.r[0], 0)
