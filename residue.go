@@ -4,15 +4,15 @@
 
 package mod256
 
-// A residue is stored as any 256-bit unsigned integer in the residue
-// class, represented by a 4-element little-endian array of uint64
-
+// Residue contains a representative of a residue class, and the pointer to its modulus.
+// The residue is stored as any 256-bit unsigned integer in the residue
+// class, represented by a 4-element little-endian array of uint64.
 type Residue struct {
 	m *Modulus
 	r [4]uint64
 }
 
-// Set value from little-endian array of uint64
+// FromUint64 sets the residue value from a little-endian array of uint64.
 func (z *Residue) FromUint64(m *Modulus, x [4]uint64) *Residue {
 
 	if m.m[3] == 0 {
@@ -24,17 +24,21 @@ func (z *Residue) FromUint64(m *Modulus, x [4]uint64) *Residue {
 	return z
 }
 
+// ToUint64 returns an array with the canonical representative of the residue class.
 func (z *Residue) ToUint64() [4]uint64 {
 	z.reduce4() // Reduce to canonical residue
 	return z.r
 }
 
+// Cpy copies one residue to another.
+// Both the residue value and the modulus pointer are copied.
 func (z *Residue) Cpy(x *Residue) *Residue {
 	z.m = x.m
 	z.r = x.r
 	return z
 }
 
+// shiftleft256 shifts the 256-bit value in a little-endian array left by 0-63 bits.
 func shiftleft256(x [4]uint64, s uint) (z [4]uint64) {
 	l := s % 64	// left shift
 	r := 64 - l	// right shift

@@ -11,6 +11,7 @@ import (
 // z = 1/x mod m if it exists, otherwise 0
 // Returns true if the inverse exists
 
+// Inv computes the (multiplicative) inverse of a residue, if it exists.
 func (z *Residue) Inv() bool {
 
 	var (

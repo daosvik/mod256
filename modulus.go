@@ -4,6 +4,8 @@
 
 package mod256
 
+// Modulus contains a modulus `m` as well as derived values that help speed up computations.
+// The allowed range for `m` is `2^192` to `2^256-1`.
 type Modulus struct {
 	m    [4]uint64 // modulus
 	mu   [5]uint64 // reciprocal
@@ -11,7 +13,7 @@ type Modulus struct {
 	mmu1 [4]uint64 // (m*mu + 1*m) % 2^256
 }
 
-// Set value from little-endian array of uint64
+// FromUint64 sets the modulus value from a little-endian array of uint64.
 func (z *Modulus) FromUint64(m [4]uint64) *Modulus {
 
 	if m[3] == 0 {
@@ -34,6 +36,7 @@ func (z *Modulus) FromUint64(m [4]uint64) *Modulus {
 	return z
 }
 
+// ToUint64 returns an array with the modulus.
 func (z *Modulus) ToUint64() [4]uint64 {
 	return z.m
 }

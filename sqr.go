@@ -8,6 +8,7 @@ import (
 	. "math/bits"
 )
 
+// Sqr computes the square of a residue.
 func (z *Residue) Sqr() *Residue {
 	// Squaring
 
