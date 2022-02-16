@@ -13,12 +13,14 @@ type Modulus struct {
 	mmu1 [4]uint64 // (m*mu + 1*m) % 2^256
 }
 
-// FromUint64 sets the modulus value from a little-endian array of uint64.
-func (z *Modulus) FromUint64(m [4]uint64) *Modulus {
+// NewModulusFromUint64 creates a new modulus object from a little-endian array of uint64.
+func NewModulusFromUint64(m [4]uint64) (z *Modulus) {
 
 	if m[3] == 0 {
 		panic("Modulus < 2^192")
 	}
+
+	z = &Modulus{}
 
 	// Store the modulus itself
 
