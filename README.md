@@ -28,96 +28,27 @@ Structured as well as random test values are used.
 
 The speeds achieved in mod256 compared to [uint256](https://github.com/holiman/uint256) below illustrate the performance advantage of designing specifically for modular arithmetic.
 
-Note that the aim of uint256 is to provide a replacement for big.Int for 256-bit integers. Therefore there is only partially overlapping functionality.
+Note that the aim of uint256 is to provide a replacement for big.Int for 256-bit integers. Therefore there is only partially overlapping functionality, which is for modular addition and modular multiplication.
 
-All benchmarks were performed using Go version 1.17.6. For brevity, only each median of 9 tests is shown here.
-
-### Ice Lake (mobile) @ 1.5 GHz
-
+All benchmarks were performed using Go version 1.17.6, and all report 0 B/op and 0 allocs/op, both for mod256 and uint256.
 ```
-BenchmarkMod256/Neg-8                187632590           6.402 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Dbl-8                 87988447          13.61 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Sub-8                 78145950          15.62 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Add-8                 69903696          16.13 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Sqr-8                 10063964         119.3 ns/op             0 B/op           0 allocs/op
-BenchmarkMod256/Mul-8                  9191982         130.9 ns/op             0 B/op           0 allocs/op
-BenchmarkMod256/Inv-8                   113192       10662 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/Exp-8                    31624       37431 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/ExpPrecomp-8             72931       16314 ns/op               0 B/op           0 allocs/op
+                       Ice Lake 1.5GHz         M1 3.2GHz    Skylake 2.2GHz      Zen 2 3.6GHz      Zen 3 3.9GHz
+Mod256/Neg                 6.35ns ± 0%       5.39ns ± 1%       4.60ns ± 0%       2.99ns ± 0%       2.59ns ± 0%
+Mod256/Dbl                 13.6ns ± 0%       5.76ns ± 0%       11.2ns ± 0%       5.87ns ± 0%       5.70ns ± 0%
+Mod256/Sub                 15.6ns ± 1%       7.20ns ± 0%       12.5ns ± 0%       7.62ns ± 0%       5.80ns ± 0%
+Mod256/Add                 16.1ns ± 2%       7.27ns ± 0%       13.4ns ± 0%       8.58ns ± 0%       6.14ns ± 3%
+Mod256/Sqr                  119ns ± 1%       30.2ns ± 0%       84.8ns ± 0%       42.8ns ± 0%       41.9ns ± 0%
+Mod256/Mul                  131ns ± 0%       36.0ns ± 0%       91.8ns ± 0%       47.4ns ± 0%       45.9ns ± 0%
+Mod256/Inv                 10.6µs ± 0%       2.78µs ± 0%       8.40µs ± 0%       5.35µs ± 0%       4.48µs ± 0%
+Mod256/Exp                 37.0µs ± 0%       9.91µs ± 0%       26.0µs ± 0%       13.8µs ± 0%       13.1µs ± 0%
+Mod256/ExpPrecomp          12.5µs ± 0%       3.37µs ± 0%       8.58µs ± 0%       4.61µs ± 0%       4.33µs ± 0%
 
-BenchmarkAddMod/mod256/uint256-8      29427345          40.41 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256-8       3651633         328.5 ns/op             0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256r-8      8301348         144.8 ns/op             0 B/op           0 allocs/op
+AddMod/mod256/uint256      40.4ns ± 0%       15.6ns ± 2%       32.3ns ± 0%       22.2ns ± 0%       19.6ns ± 0%
+MulMod/mod256/uint256       328ns ± 0%       90.2ns ± 0%        237ns ± 0%        129ns ± 0%        114ns ± 0%
+MulMod/mod256/uint256r      145ns ± 0%       40.3ns ± 0%       94.3ns ± 0%       51.8ns ± 0%       52.8ns ± 0%
 ```
 
-### M1 @ 3.2 GHz
-
-```
-BenchmarkMod256/Neg-8                225061627           5.398 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Dbl-8                208388655           5.758 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Sub-8                166325428           7.203 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Add-8                165019262           7.273 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Sqr-8                 39676798          30.22 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Mul-8                 33286484          36.01 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Inv-8                   433461        2785 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/Exp-8                   129596        9896 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/ExpPrecomp-8            269511        4452 ns/op               0 B/op           0 allocs/op
-
-BenchmarkAddMod/mod256/uint256-8      76248772          15.88 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256-8      13249834          90.24 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256r-8     29764826          40.28 ns/op            0 B/op           0 allocs/op
-```
-
-### Skylake @ 2.2 GHz
-
-```
-BenchmarkMod256/Neg-4                260609025           4.576 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Dbl-4                100000000          11.23 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Sub-4                 95406411          12.53 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Add-4                 89778802          13.35 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Sqr-4                 14057278          84.81 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Mul-4                 13072905          91.80 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Inv-4                   143182        8390 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/Exp-4                    45506       26153 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/ExpPrecomp-4            105787       11336 ns/op               0 B/op           0 allocs/op
-
-BenchmarkAddMod/mod256/uint256-4      37145136          32.23 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256-4       5047970         237.3 ns/op             0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256r-4     12708961          94.22 ns/op            0 B/op           0 allocs/op
-```
-
-### Zen 2 @ 3.6 GHz
-
-```
-BenchmarkMod256/Neg-12               333289629           3.844 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Dbl-12               150186574           8.503 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Sub-12               124515450          10.03 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Add-12               100000000          10.91 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Sqr-12                20554772          53.26 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Mul-12                23398146          57.62 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Inv-12                  152364        7486 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/Exp-12                   64242       17318 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/ExpPrecomp-12           150073        7408 ns/op               0 B/op           0 allocs/op
-
-BenchmarkAddMod/mod256/uint256-12     53721606          22.19 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256-12      9285478         128.8 ns/op             0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256r-12    23170990          51.72 ns/op            0 B/op           0 allocs/op
-```
-
-### Zen 3 @ 3.9 GHz
-
-```
-BenchmarkMod256/Neg-12               457737588           2.598 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Dbl-12               210516388           5.698 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Sub-12               211873234           5.660 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Add-12               197642300           6.095 ns/op           0 B/op           0 allocs/op
-BenchmarkMod256/Sqr-12                27790299          42.84 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Mul-12                26322823          45.60 ns/op            0 B/op           0 allocs/op
-BenchmarkMod256/Inv-12                  269335        4465 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/Exp-12                   90829       13183 ns/op               0 B/op           0 allocs/op
-BenchmarkMod256/ExpPrecomp-12           210309        5669 ns/op               0 B/op           0 allocs/op
-
-BenchmarkAddMod/mod256/uint256-12     60854953          19.65 ns/op            0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256-12     10438305         114.0 ns/op             0 B/op           0 allocs/op
-BenchmarkMulMod/mod256/uint256r-12    22693557          52.73 ns/op            0 B/op           0 allocs/op
-```
+In short:
+- Addition is from over 2x (M1) to over 3x (Zen 3) times as fast as uint256.
+- Multiplication is from 2.48x (Zen 3) to 2.72x (Zen 2) faster than multiplication *without* reciprocal cache in uint256.
+- Multiplication is from 2.7% (Skylake) to 15% (Zen 3) faster than multiplication *with* reciprocal cache in uint256.
