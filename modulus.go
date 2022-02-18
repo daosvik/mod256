@@ -14,17 +14,15 @@ type Modulus struct {
 }
 
 // NewModulusFromUint64 creates a new modulus object from a little-endian array of uint64.
-func NewModulusFromUint64(m [4]uint64) (z *Modulus) {
+func NewModulusFromUint64(m [4]uint64) (z *Modulus, error) {
 
 	if m[3] == 0 {
-		panic("Modulus < 2^192")
+		return nil, errors.New("Modulus < 2^192")
 	}
 
-	z = &Modulus{}
 
 	// Store the modulus itself
-
-	z.m = m
+	z = &Modulus{m: m}
 
 	// Compute reciprocal of m
 
