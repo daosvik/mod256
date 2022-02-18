@@ -4,6 +4,10 @@
 
 package mod256
 
+import (
+	"errors"
+)
+
 // Modulus contains a modulus `m` as well as derived values that help speed up computations.
 // The allowed range for `m` is `2^192` to `2^256-1`.
 type Modulus struct {
@@ -14,7 +18,7 @@ type Modulus struct {
 }
 
 // NewModulusFromUint64 creates a new modulus object from a little-endian array of uint64.
-func NewModulusFromUint64(m [4]uint64) (z *Modulus, error) {
+func NewModulusFromUint64(m [4]uint64) (z *Modulus, err error) {
 
 	if m[3] == 0 {
 		return nil, errors.New("Modulus < 2^192")
@@ -33,7 +37,7 @@ func NewModulusFromUint64(m [4]uint64) (z *Modulus, error) {
 	mmu0(z)
 	mmu1(z)
 
-	return z
+	return
 }
 
 // ToUint64 returns an array with the modulus.

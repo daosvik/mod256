@@ -125,9 +125,13 @@ func TestModulusFromToUint64_OK(t *testing.T) {
 			continue
 		}
 
-		x := NewModulusFromUint64(m).ToUint64()
+		x, err := NewModulusFromUint64(m)
 
-		if x != m {
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
+
+		if x.ToUint64() != m {
 			t.Fatalf("%v != %v", x, y)
 		}
 	}
@@ -136,7 +140,11 @@ func TestModulusFromToUint64_OK(t *testing.T) {
 func testMmu0Fail(t *testing.T, x [4]uint64) {
 	var c uint64
 
-	m := NewModulusFromUint64(x)
+	m, err := NewModulusFromUint64(x)
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
 
 	defer func() {
 		err := recover()
@@ -172,7 +180,11 @@ func TestMmu0Fail(t *testing.T) {
 func testMmu1Fail(t *testing.T, x [4]uint64) {
 	var b uint64
 
-	m := NewModulusFromUint64(x)
+	m, err := NewModulusFromUint64(x)
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
 
 	defer func() {
 		err := recover()
@@ -206,10 +218,15 @@ func TestMmu1Fail(t *testing.T) {
 	}
 }
 
-func testResidueFromUint64_OK() {
+func testResidueFromUint64_OK(t *testing.T) {
 	var r Residue
 
-	m := NewModulusFromUint64([4]uint64 { 0, 1, 2, 3 })
+	m, err := NewModulusFromUint64([4]uint64 { 0, 1, 2, 3 })
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
+
 	r.FromUint64(m, [4]uint64 { 4, 5, 6, 7 })
 }
 
@@ -223,7 +240,7 @@ func TestResidueFromUint64_OK(t *testing.T) {
 		}
 	}()
 
-	testResidueFromUint64_OK()
+	testResidueFromUint64_OK(t)
 }
 
 func testResidueFromUint64_NoInit() {
@@ -249,9 +266,13 @@ func TestResidueFromUint64_NoInit(t *testing.T) {
 	testResidueFromUint64_NoInit()
 }
 
-func testResidueFromUint64_TooSmallModulus(m *Modulus) {
+func testResidueFromUint64_TooSmallModulus(t *testing.T, m *Modulus) {
 
-	m = NewModulusFromUint64([4]uint64 { 3, 2, 1, 0 })
+	m, err := NewModulusFromUint64([4]uint64 { 3, 2, 1, 0 })
+
+	if err != nil {
+		panic("NewModulusFromUint64() failed")
+	}
 }
 
 func TestResidueFromUint64_TooSmallModulus(t *testing.T) {
@@ -266,7 +287,7 @@ func TestResidueFromUint64_TooSmallModulus(t *testing.T) {
 		}
 	}()
 
-	testResidueFromUint64_TooSmallModulus(m)
+	testResidueFromUint64_TooSmallModulus(t, m)
 }
 
 func requireSuccess(t *testing.T, f func(a, b *Residue), a, b *Residue) {
@@ -329,7 +350,11 @@ func TestResidueCompatibility(t *testing.T) {
 			continue
 		}
 
-		m1 := NewModulusFromUint64(m)
+		m1, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for _, a := range test_ops {
 			r1.FromUint64(m1, a)
@@ -339,7 +364,12 @@ func TestResidueCompatibility(t *testing.T) {
 					continue
 				}
 
-				m2 := NewModulusFromUint64(n)
+				m2, err := NewModulusFromUint64(n)
+
+				if err != nil {
+					t.Fatalf("NewModulusFromUint64() failed")
+				}
+
 				r2.FromUint64(m2, a)
 
 				if i==j {
@@ -374,7 +404,11 @@ func TestResidueFromToUint64(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		bm.SetString(fmt.Sprintf("%016x%016x%016x%016x", m[3], m[2], m[1], m[0]), 16)
 
@@ -529,8 +563,17 @@ func TestEqNeq(t *testing.T) {
 
 	// All unequal
 
-	m1 := NewModulusFromUint64([4]uint64 { 1, 2, 3, 4 })
-	m2 := NewModulusFromUint64([4]uint64 { 5, 6, 7, 8 })
+	m1, err := NewModulusFromUint64([4]uint64 { 1, 2, 3, 4 })
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
+
+	m2, err := NewModulusFromUint64([4]uint64 { 5, 6, 7, 8 })
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
 
 	r[0].FromUint64(m1, [4]uint64 { 1, 3, 5, 7 })
 	r[1].FromUint64(m1, [4]uint64 { 2, 4, 6, 8 })
@@ -609,7 +652,11 @@ func TestEqNeq(t *testing.T) {
 			continue
 		}
 
-		m1 := NewModulusFromUint64(m)
+		m1, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(m1, _a)
@@ -654,7 +701,11 @@ func TestReflexivity(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -690,7 +741,11 @@ func TestSymmetry(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -750,7 +805,12 @@ func TestAdditiveIdentity(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)		// modulus
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
+
 		zero_p.FromUint64(mod, m)	// residue value m == 0 (mod m)
 		zero.Cpy(&zero_p).Sub(&zero_p)	// 0
 		zero_m.Cpy(&zero).Sub(&zero_p)	// 0-m
@@ -800,7 +860,12 @@ func TestMultiplicativeIdentity(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)		// modulus
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
+
 		zero.FromUint64(mod, m)	// residue value m == 0 (mod m)
 		one.FromUint64(mod, [4]uint64{ 1, 0, 0, 0 })
 
@@ -853,7 +918,11 @@ func TestAdditiveInverse(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -885,7 +954,11 @@ func TestAdditiveInverse(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -913,7 +986,11 @@ func TestAdditiveInverse(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -964,7 +1041,12 @@ func TestMultiplicativeInverse(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
+
 		one.FromUint64(mod, [4]uint64{ 1, 0, 0, 0 })
 
 		for j, _a := range test_ops {
@@ -1009,7 +1091,11 @@ func TestCommutativeAdd(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1051,7 +1137,11 @@ func TestCommutativeMul(t *testing.T) {
 			continue
 		}
 
-		m := NewModulusFromUint64(_m)
+		m, err := NewModulusFromUint64(_m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(m, _a)
@@ -1104,7 +1194,11 @@ func TestAssociativeAdd(t *testing.T) {
 			continue
 		}
 
-		m := NewModulusFromUint64(_m)
+		m, err := NewModulusFromUint64(_m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(m, _a)
@@ -1152,7 +1246,11 @@ func TestAssociativeMul(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1200,7 +1298,11 @@ func TestDistributiveLeft(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1255,7 +1357,11 @@ func TestDistributiveRight(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1309,7 +1415,11 @@ func TestDouble(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1337,7 +1447,11 @@ func TestDouble(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1402,7 +1516,11 @@ func TestSquare(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1439,7 +1557,11 @@ func TestSquare(t *testing.T) {
 			continue
 		}
 
-		mod := NewModulusFromUint64(m)
+		mod, err := NewModulusFromUint64(m)
+
+		if err != nil {
+			t.Fatalf("NewModulusFromUint64() failed")
+		}
 
 		for j, _a := range test_ops {
 			a.FromUint64(mod, _a)
@@ -1502,7 +1624,11 @@ func TestExponentiation(t *testing.T) {
 
 	// a^m == a
 
-	mod := NewModulusFromUint64(nistp256)
+	mod, err := NewModulusFromUint64(nistp256)
+
+	if err != nil {
+		t.Fatalf("NewModulusFromUint64() failed")
+	}
 
 	for i, _a := range test_ops {
 		a.FromUint64(mod, _a)
@@ -1563,7 +1689,7 @@ func BenchmarkMod256(b *testing.B) {
 }
 
 func benchmarkNeg(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1577,7 +1703,7 @@ func benchmarkNeg(b *testing.B) {
 }
 
 func benchmarkDbl(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1591,7 +1717,7 @@ func benchmarkDbl(b *testing.B) {
 }
 
 func benchmarkSub(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1605,7 +1731,7 @@ func benchmarkSub(b *testing.B) {
 }
 
 func benchmarkAdd(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1619,7 +1745,7 @@ func benchmarkAdd(b *testing.B) {
 }
 
 func benchmarkSqr(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1633,7 +1759,7 @@ func benchmarkSqr(b *testing.B) {
 }
 
 func benchmarkMul(b *testing.B) {
-	m := NewModulusFromUint64(nistp256)
+	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
 	y.FromUint64(m, [4]uint64{997, 499, 503, 509})
@@ -1654,7 +1780,7 @@ func benchmarkInv(b *testing.B) {
 
 	test_ops := test_all
 
-	mod := NewModulusFromUint64(nistp256)
+	mod, _ := NewModulusFromUint64(nistp256)
 
 OuterLoop:
 	for {
@@ -1692,7 +1818,7 @@ OuterLoop:
 				continue
 			}
 
-			mod := NewModulusFromUint64(m)
+			mod, _ := NewModulusFromUint64(m)
 
 			for _, _a := range test_ops {
 				a.FromUint64(mod, _a)
@@ -1731,7 +1857,7 @@ OuterLoop:
 				continue
 			}
 
-			mod := NewModulusFromUint64(m)
+			mod, _ := NewModulusFromUint64(m)
 
 			for _, _a := range test_ops {
 				a.FromUint64(mod, _a)
