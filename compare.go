@@ -4,8 +4,8 @@
 
 package mod256
 
-// Eq compares one residue to another, returns true when equal.
-func (x *Residue) Eq(y *Residue) bool {
+// Equal compares one residue to another, returns true when equal.
+func (x *Residue) Equal(y *Residue) bool {
 	m := x.m.m[0] ^ y.m.m[0]
 	m |= x.m.m[1] ^ y.m.m[1]
 	m |= x.m.m[2] ^ y.m.m[2]
@@ -26,8 +26,8 @@ func (x *Residue) Eq(y *Residue) bool {
 	return r == 0
 }
 
-// Neq compares one residue to another, returns true when different.
-func (x *Residue) Neq(y *Residue) bool {
+// NotEqual compares one residue to another, returns true when different.
+func (x *Residue) NotEqual(y *Residue) bool {
 	m := x.m.m[0] ^ y.m.m[0]
 	m |= x.m.m[1] ^ y.m.m[1]
 	m |= x.m.m[2] ^ y.m.m[2]

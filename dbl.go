@@ -8,8 +8,8 @@ import (
 	. "math/bits"
 )
 
-// Dbl computes the double of a residue.
-func (z *Residue) Dbl() *Residue {
+// Double computes the double of a residue.
+func (z *Residue) Double() *Residue {
 
 	t0, c := Add64(z.r[0], z.r[0], 0)
 	t1, c := Add64(z.r[1], z.r[1], c)

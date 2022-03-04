@@ -30,9 +30,9 @@ func (z *Residue) ToUint64() [4]uint64 {
 	return z.r
 }
 
-// Cpy copies one residue to another.
+// Copy copies one residue to another.
 // Both the residue value and the modulus pointer are copied.
-func (z *Residue) Cpy(x *Residue) *Residue {
+func (z *Residue) Copy(x *Residue) *Residue {
 	z.m = x.m
 	z.r = x.r
 	return z
