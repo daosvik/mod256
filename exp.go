@@ -14,78 +14,78 @@ type ExpBase struct {
 func (z *ExpBase) FromResidue(x *Residue) *ExpBase {
 	var r Residue
 
-	r.Cpy(x)
+	r.Copy(x)
 
 	z.l[0].m = r.m
 	z.l[0].r = [4]uint64{1,0,0,0}
 
-	z.l[1].Cpy(&r)
+	z.l[1].Copy(&r)
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.l[2].Cpy(&r)
-	z.l[3].Cpy(&r).Mul(&z.l[1])
+	z.l[2].Copy(&r)
+	z.l[3].Copy(&r).Mul(&z.l[1])
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.l[4].Cpy(&r)
-	z.l[5].Cpy(&r).Mul(&z.l[1])
-	z.l[6].Cpy(&r).Mul(&z.l[2])
-	z.l[7].Cpy(&r).Mul(&z.l[3])
+	z.l[4].Copy(&r)
+	z.l[5].Copy(&r).Mul(&z.l[1])
+	z.l[6].Copy(&r).Mul(&z.l[2])
+	z.l[7].Copy(&r).Mul(&z.l[3])
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.l[ 8].Cpy(&r)
-	z.l[ 9].Cpy(&r).Mul(&z.l[1])
-	z.l[10].Cpy(&r).Mul(&z.l[2])
-	z.l[11].Cpy(&r).Mul(&z.l[3])
-	z.l[12].Cpy(&r).Mul(&z.l[4])
-	z.l[13].Cpy(&r).Mul(&z.l[5])
-	z.l[14].Cpy(&r).Mul(&z.l[6])
-	z.l[15].Cpy(&r).Mul(&z.l[7])
+	z.l[ 8].Copy(&r)
+	z.l[ 9].Copy(&r).Mul(&z.l[1])
+	z.l[10].Copy(&r).Mul(&z.l[2])
+	z.l[11].Copy(&r).Mul(&z.l[3])
+	z.l[12].Copy(&r).Mul(&z.l[4])
+	z.l[13].Copy(&r).Mul(&z.l[5])
+	z.l[14].Copy(&r).Mul(&z.l[6])
+	z.l[15].Copy(&r).Mul(&z.l[7])
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.h[0].Cpy(&z.l[0])
+	z.h[0].Copy(&z.l[0])
 
-	z.h[1].Cpy(&r)
+	z.h[1].Copy(&r)
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.h[2].Cpy(&r)
-	z.h[3].Cpy(&r).Mul(&z.h[1])
+	z.h[2].Copy(&r)
+	z.h[3].Copy(&r).Mul(&z.h[1])
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.h[4].Cpy(&r)
-	z.h[5].Cpy(&r).Mul(&z.h[1])
-	z.h[6].Cpy(&r).Mul(&z.h[2])
-	z.h[7].Cpy(&r).Mul(&z.h[3])
+	z.h[4].Copy(&r)
+	z.h[5].Copy(&r).Mul(&z.h[1])
+	z.h[6].Copy(&r).Mul(&z.h[2])
+	z.h[7].Copy(&r).Mul(&z.h[3])
 
 	for i:=0; i<32; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	z.h[ 8].Cpy(&r)
-	z.h[ 9].Cpy(&r).Mul(&z.h[1])
-	z.h[10].Cpy(&r).Mul(&z.h[2])
-	z.h[11].Cpy(&r).Mul(&z.h[3])
-	z.h[12].Cpy(&r).Mul(&z.h[4])
-	z.h[13].Cpy(&r).Mul(&z.h[5])
-	z.h[14].Cpy(&r).Mul(&z.h[6])
-	z.h[15].Cpy(&r).Mul(&z.h[7])
+	z.h[ 8].Copy(&r)
+	z.h[ 9].Copy(&r).Mul(&z.h[1])
+	z.h[10].Copy(&r).Mul(&z.h[2])
+	z.h[11].Copy(&r).Mul(&z.h[3])
+	z.h[12].Copy(&r).Mul(&z.h[4])
+	z.h[13].Copy(&r).Mul(&z.h[5])
+	z.h[14].Copy(&r).Mul(&z.h[6])
+	z.h[15].Copy(&r).Mul(&z.h[7])
 
 	return z
 }
@@ -104,7 +104,7 @@ func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) *Residue {
 		((y[0] >> 62) & 2) |
 		((y[0] >> 31) & 1)
 
-	z.Cpy(&x.h[h]).Mul(&x.l[l])
+	z.Copy(&x.h[h]).Mul(&x.l[l])
 
 	for i := 1; i<32; i++ {
 		y[3] <<= 1
@@ -122,7 +122,7 @@ func (z *Residue) ExpPrecomp(x *ExpBase, y [4]uint64) *Residue {
 			((y[0] >> 62) & 2) |
 			((y[0] >> 31) & 1)
 
-		z.Sqr().Mul(&x.h[h]).Mul(&x.l[l])
+		z.Square().Mul(&x.h[h]).Mul(&x.l[l])
 	}
 
 	return z
@@ -136,41 +136,41 @@ func (z *Residue) Exp(x [4]uint64) *Residue {
 		t [16]Residue
 	)
 
-	r.Cpy(z)
+	r.Copy(z)
 
 	t[0].m = r.m
 	t[0].r = [4]uint64{1,0,0,0}
 
-	t[1].Cpy(z)
+	t[1].Copy(z)
 
 	for i:=0; i<64; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	t[2].Cpy(&r)
-	t[3].Cpy(&r).Mul(&t[1])
+	t[2].Copy(&r)
+	t[3].Copy(&r).Mul(&t[1])
 
 	for i:=0; i<64; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	t[4].Cpy(&r)
-	t[5].Cpy(&r).Mul(&t[1])
-	t[6].Cpy(&r).Mul(&t[2])
-	t[7].Cpy(&r).Mul(&t[3])
+	t[4].Copy(&r)
+	t[5].Copy(&r).Mul(&t[1])
+	t[6].Copy(&r).Mul(&t[2])
+	t[7].Copy(&r).Mul(&t[3])
 
 	for i:=0; i<64; i++ {
-		r.Sqr()
+		r.Square()
 	}
 
-	t[ 8].Cpy(&r)
-	t[ 9].Cpy(&r).Mul(&t[1])
-	t[10].Cpy(&r).Mul(&t[2])
-	t[11].Cpy(&r).Mul(&t[3])
-	t[12].Cpy(&r).Mul(&t[4])
-	t[13].Cpy(&r).Mul(&t[5])
-	t[14].Cpy(&r).Mul(&t[6])
-	t[15].Cpy(&r).Mul(&t[7])
+	t[ 8].Copy(&r)
+	t[ 9].Copy(&r).Mul(&t[1])
+	t[10].Copy(&r).Mul(&t[2])
+	t[11].Copy(&r).Mul(&t[3])
+	t[12].Copy(&r).Mul(&t[4])
+	t[13].Copy(&r).Mul(&t[5])
+	t[14].Copy(&r).Mul(&t[6])
+	t[15].Copy(&r).Mul(&t[7])
 
 	y := x
 
@@ -179,7 +179,7 @@ func (z *Residue) Exp(x [4]uint64) *Residue {
 		((y[1] >> 62) & 2) |
 		((y[0] >> 63) & 1)
 
-	z.Cpy(&t[j])
+	z.Copy(&t[j])
 
 	for i := 1; i<64; i++ {
 		y[3] <<= 1
@@ -192,7 +192,7 @@ func (z *Residue) Exp(x [4]uint64) *Residue {
 			((y[1] >> 62) & 2) |
 			((y[0] >> 63) & 1)
 
-		z.Sqr().Mul(&t[j])
+		z.Square().Mul(&t[j])
 	}
 
 	return z

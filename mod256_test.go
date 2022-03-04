@@ -583,32 +583,32 @@ func TestEqNeq(t *testing.T) {
 
 	for i:=0; i<4; i++ {
 		for j:=0; j<4; j++ {
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if (i == j) && !x.Eq(&y) {
-				t.Fatalf("Eq(%v, %v)", r[i], r[j])
+			if (i == j) && !x.Equal(&y) {
+				t.Fatalf("Equal(%v, %v)", r[i], r[j])
 			}
 
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if (i != j) && x.Eq(&y) {
-				t.Fatalf("Eq(%v, %v)", r[i], r[j])
+			if (i != j) && x.Equal(&y) {
+				t.Fatalf("Equal(%v, %v)", r[i], r[j])
 			}
 
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if (i == j) && x.Neq(&y) {
-				t.Fatalf("Neq(%v, %v)", r[i], r[j])
+			if (i == j) && x.NotEqual(&y) {
+				t.Fatalf("NotEqual(%v, %v)", r[i], r[j])
 			}
 
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if (i != j) && !x.Neq(&y) {
-				t.Fatalf("Neq(%v, %v)", r[i], r[j])
+			if (i != j) && !x.NotEqual(&y) {
+				t.Fatalf("NotEqual(%v, %v)", r[i], r[j])
 			}
 			count+=2
 		}
@@ -623,18 +623,18 @@ func TestEqNeq(t *testing.T) {
 
 	for i:=0; i<4; i++ {
 		for j:=0; j<4; j++ {
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if !x.Eq(&y) {
-				t.Fatalf("Eq(%v, %v)", r[i], r[j])
+			if !x.Equal(&y) {
+				t.Fatalf("Equal(%v, %v)", r[i], r[j])
 			}
 
-			x.Cpy(&r[i])
-			y.Cpy(&r[j])
+			x.Copy(&r[i])
+			y.Copy(&r[j])
 
-			if x.Neq(&y) {
-				t.Fatalf("Neq(%v, %v)", r[i], r[j])
+			if x.NotEqual(&y) {
+				t.Fatalf("NotEqual(%v, %v)", r[i], r[j])
 			}
 			count+=2
 		}
@@ -644,7 +644,7 @@ func TestEqNeq(t *testing.T) {
 	test_ops := test_fixed
 
 	// a == a+m (mod m)
-	// Eq(a,b) != Neq(a,b) for all a,b
+	// Equal(a,b) != NotEqual(a,b) for all a,b
 
 	for i, m := range test_mod {
 
@@ -663,10 +663,10 @@ func TestEqNeq(t *testing.T) {
 
 			for k, _b := range test_ops {
 				b.FromUint64(m1, _b)
-				c.Cpy(&a)
+				c.Copy(&a)
 
-				u = c.Eq(&b)
-				v = c.Neq(&b)
+				u = c.Equal(&b)
+				v = c.NotEqual(&b)
 
 				if u == v {
 					t.Errorf("a==b = %v", u)
@@ -710,7 +710,7 @@ func TestReflexivity(t *testing.T) {
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
 
-			u = a.Eq(&a)
+			u = a.Equal(&a)
 
 			if u == false {
 				t.Errorf("a=%v\n", a);
@@ -755,8 +755,8 @@ func TestSymmetry(t *testing.T) {
 
 				// (a==b) == (b==a)
 
-				u = a.Eq(&b)
-				v = b.Eq(&a)
+				u = a.Equal(&b)
+				v = b.Equal(&a)
 
 				if u != v {
 					t.Errorf("a==b = %v", u)
@@ -768,8 +768,8 @@ func TestSymmetry(t *testing.T) {
 
 				// (a!=b) == (b!=a)
 
-				u = a.Neq(&b)
-				v = b.Neq(&a)
+				u = a.NotEqual(&b)
+				v = b.NotEqual(&a)
 
 				if u != v {
 					t.Errorf("a!=b = %v", u)
@@ -812,21 +812,21 @@ func TestAdditiveIdentity(t *testing.T) {
 		}
 
 		zero_p.FromUint64(mod, m)	// residue value m == 0 (mod m)
-		zero.Cpy(&zero_p).Sub(&zero_p)	// 0
-		zero_m.Cpy(&zero).Sub(&zero_p)	// 0-m
+		zero.Copy(&zero_p).Sub(&zero_p)	// 0
+		zero_m.Copy(&zero).Sub(&zero_p)	// 0-m
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
 
-			u.Cpy(&a).Add(&zero_m)
-			v.Cpy(&a).Add(&zero  )
-			w.Cpy(&a).Add(&zero_p)
+			u.Copy(&a).Add(&zero_m)
+			v.Copy(&a).Add(&zero  )
+			w.Copy(&a).Add(&zero_p)
 
-			x.Cpy(&zero_m).Add(&a)
-			y.Cpy(&zero  ).Add(&a)
-			z.Cpy(&zero_p).Add(&a)
+			x.Copy(&zero_m).Add(&a)
+			y.Copy(&zero  ).Add(&a)
+			z.Copy(&zero_p).Add(&a)
 
-			if a.Neq(&u) || a.Neq(&v) || a.Neq(&w) || a.Neq(&x) || a.Neq(&y) || a.Neq(&z) {
+			if a.NotEqual(&u) || a.NotEqual(&v) || a.NotEqual(&w) || a.NotEqual(&x) || a.NotEqual(&y) || a.NotEqual(&z) {
 				t.Errorf("m=%v\n", m);
 				t.Errorf("a=%v\n", a);
 				t.Errorf("u=%v\n", u);
@@ -869,21 +869,21 @@ func TestMultiplicativeIdentity(t *testing.T) {
 		zero.FromUint64(mod, m)	// residue value m == 0 (mod m)
 		one.FromUint64(mod, [4]uint64{ 1, 0, 0, 0 })
 
-		one_m.Cpy(&one).Sub(&zero)	// 1-m
-		one_p.Cpy(&one).Add(&zero)	// 1+m
+		one_m.Copy(&one).Sub(&zero)	// 1-m
+		one_p.Copy(&one).Add(&zero)	// 1+m
 
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
 
-			u.Cpy(&a).Mul(&one_m)
-			v.Cpy(&a).Mul(&one  )
-			w.Cpy(&a).Mul(&one_p)
+			u.Copy(&a).Mul(&one_m)
+			v.Copy(&a).Mul(&one  )
+			w.Copy(&a).Mul(&one_p)
 
-			x.Cpy(&one_m).Mul(&a)
-			y.Cpy(&one  ).Mul(&a)
-			z.Cpy(&one_p).Mul(&a)
+			x.Copy(&one_m).Mul(&a)
+			y.Copy(&one  ).Mul(&a)
+			z.Copy(&one_p).Mul(&a)
 
-			if a.Neq(&u) || a.Neq(&v) || a.Neq(&w) || a.Neq(&x) || a.Neq(&y) || a.Neq(&z) {
+			if a.NotEqual(&u) || a.NotEqual(&v) || a.NotEqual(&w) || a.NotEqual(&x) || a.NotEqual(&y) || a.NotEqual(&z) {
 				t.Errorf("m=%v\n", m);
 				t.Errorf("a=%v\n", a);
 				t.Errorf("u=%v\n", u);
@@ -927,15 +927,15 @@ func TestAdditiveInverse(t *testing.T) {
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
 
-			v.Cpy(&a).Neg()
+			v.Copy(&a).Neg()
 
 			// a+(-a)
-			u.Cpy(&a).Add(&v)
+			u.Copy(&a).Add(&v)
 
 			// (-a)+a
 			v.Add(&a)
 
-			if u.Neq(&v) {
+			if u.NotEqual(&v) {
 				t.Errorf("a=%v\n", a);
 				t.Errorf("m=%v\n", m);
 				t.Errorf("a+(-a)=%v\n", u);
@@ -963,9 +963,9 @@ func TestAdditiveInverse(t *testing.T) {
 		for _, _a := range test_ops {
 			a.FromUint64(mod, _a)
 
-			u.Cpy(&a).Neg().Neg()
+			u.Copy(&a).Neg().Neg()
 
-			if u.Neq(&a) {
+			if u.NotEqual(&a) {
 				t.Errorf("a=%v\n", a);
 				t.Errorf("m=%v\n", m);
 				t.Fatalf("-(-a)=%v\n", u);
@@ -999,15 +999,15 @@ func TestAdditiveInverse(t *testing.T) {
 				b.FromUint64(mod, _b)
 
 				// a-b
-				u.Cpy(&a).Sub(&b)
+				u.Copy(&a).Sub(&b)
 
 				// (-b)+a
-				v.Cpy(&b).Neg().Add(&a)
+				v.Copy(&b).Neg().Add(&a)
 
 				// -(b-a)
-				w.Cpy(&b).Sub(&a).Neg()
+				w.Copy(&b).Sub(&a).Neg()
 
-				if u.Neq(&v) || u.Neq(&w) || v.Neq(&w) {
+				if u.NotEqual(&v) || u.NotEqual(&w) || v.NotEqual(&w) {
 					t.Errorf("a-b = %v", u)
 					t.Errorf("-b+a = %v", v)
 					t.Errorf("-(b-a) = %v", w)
@@ -1053,17 +1053,17 @@ func TestMultiplicativeInverse(t *testing.T) {
 			a.FromUint64(mod, _a)
 
 			// 1/a
-			u.Cpy(&a)
+			u.Copy(&a)
 			if !u.Inv() {
 				noninvertible++
 				continue
 			}
 
 			// a * 1/a
-			v.Cpy(&a)
+			v.Copy(&a)
 			v.Mul(&u)
 
-			if v.Neq(&one) {
+			if v.NotEqual(&one) {
 				t.Errorf("%v,%v\n", i, j);
 				t.Fatalf("%v^2%%%v\n%v\n%v\n", a, m, u, v);
 			}
@@ -1103,13 +1103,13 @@ func TestCommutativeAdd(t *testing.T) {
 			for _, _b := range test_ops[:j] {
 				b.FromUint64(mod, _b)
 
-				u.Cpy(&a)
+				u.Copy(&a)
 				u.Add(&b)
 
-				v.Cpy(&b)
+				v.Copy(&b)
 				v.Add(&a)
 
-				if u.Neq(&v) {
+				if u.NotEqual(&v) {
 					t.Fatalf("%v\n+%v\n%%%v\n=%v\n=%v\n", a, b, m, u, v);
 				}
 
@@ -1149,17 +1149,17 @@ func TestCommutativeMul(t *testing.T) {
 			for k, _b := range test_ops[:j] {
 				b.FromUint64(m, _b)
 
-				u.Cpy(&a)
+				u.Copy(&a)
 				u.Mul(&b)
 
-				v.Cpy(&b)
+				v.Copy(&b)
 				v.Mul(&a)
 
-				if u.Neq(&v) {
-					u.Cpy(&a)
+				if u.NotEqual(&v) {
+					u.Copy(&a)
 					u.Mul(&b)
 
-					v.Cpy(&b)
+					v.Copy(&b)
 					v.Mul(&a)
 
 					t.Errorf("ERROR: %v/%v/%v\n", i, j, k)
@@ -1209,15 +1209,15 @@ func TestAssociativeAdd(t *testing.T) {
 				for _, _c := range test_ops[:k] {
 					c.FromUint64(m, _c)
 
-					u.Cpy(&a)
+					u.Copy(&a)
 					u.Add(&b)
 					u.Add(&c)
 
-					v.Cpy(&c)
+					v.Copy(&c)
 					v.Add(&b)
 					v.Add(&a)
 
-					if u.Neq(&v) {
+					if u.NotEqual(&v) {
 						t.Fatalf("%v+%v+%v%%%v\n%v\n%v\n", a, b, c, m, u, v);
 					}
 
@@ -1261,15 +1261,15 @@ func TestAssociativeMul(t *testing.T) {
 				for _, _c := range test_ops[:k] {
 					c.FromUint64(mod, _c)
 
-					u.Cpy(&a)
+					u.Copy(&a)
 					u.Mul(&b)
 					u.Mul(&c)
 
-					v.Cpy(&c)
+					v.Copy(&c)
 					v.Mul(&b)
 					v.Mul(&a)
 
-					if u.Neq(&v) {
+					if u.NotEqual(&v) {
 						t.Fatalf("%v*%v*%v%%%v\n%v\n%v\n", a, b, c, m, u, v);
 					}
 
@@ -1314,21 +1314,21 @@ func TestDistributiveLeft(t *testing.T) {
 					c.FromUint64(mod, _c)
 
 					// ab+ac
-					u.Cpy(&a)
+					u.Copy(&a)
 					u.Mul(&b)
 
-					v.Cpy(&a)
+					v.Copy(&a)
 					v.Mul(&c)
 
 					u.Add(&v)
 
 					// a(b+c)
-					v.Cpy(&a)
-					w.Cpy(&b)
+					v.Copy(&a)
+					w.Copy(&b)
 					w.Add(&c)
 					v.Mul(&w)
 
-					if u.Neq(&v) {
+					if u.NotEqual(&v) {
 						t.Fatalf("%v*%v*%v%%%v\n%v\n%v\n", a, b, c, m, u, v);
 					}
 
@@ -1373,20 +1373,20 @@ func TestDistributiveRight(t *testing.T) {
 					c.FromUint64(mod, _c)
 
 					// ac+bc
-					u.Cpy(&a)
+					u.Copy(&a)
 					u.Mul(&c)
 
-					v.Cpy(&b)
+					v.Copy(&b)
 					v.Mul(&c)
 
 					u.Add(&v)
 
 					// (a+b)c
-					v.Cpy(&a)
+					v.Copy(&a)
 					v.Add(&b)
 					v.Mul(&c)
 
-					if u.Neq(&v) {
+					if u.NotEqual(&v) {
 						t.Fatalf("%v*%v*%v%%%v\n%v\n%v\n", a, b, c, m, u, v);
 					}
 
@@ -1425,13 +1425,13 @@ func TestDouble(t *testing.T) {
 			a.FromUint64(mod, _a)
 
 			// 2a
-			u.Cpy(&a).Dbl()
+			u.Copy(&a).Double()
 
 			// a+a
-			v.Cpy(&a)
+			v.Copy(&a)
 			v.Add(&a)
 
-			if u.Neq(&v) {
+			if u.NotEqual(&v) {
 				t.Fatalf("2*%v%%%v\n%v\n%v\n", a, m, u, v);
 			}
 
@@ -1460,31 +1460,31 @@ func TestDouble(t *testing.T) {
 				b.FromUint64(mod, _b)
 
 				// 2(a+b)
-				u.Cpy(&a).Add(&b).Dbl()
+				u.Copy(&a).Add(&b).Double()
 
 				// 2a + 2b
-				v.Cpy(&a).Dbl()
-				b.Dbl()
+				v.Copy(&a).Double()
+				b.Double()
 				v.Add(&b)
 
-				if u.Neq(&v) {
+				if u.NotEqual(&v) {
 					b.FromUint64(mod, _b)
 					t.Errorf("a: %v\nb: %v\nm: %v\nu: %v\nv: %v\n", a, b, m, u, v);
 
 					// 2(a+b)
-					u.Cpy(&a)
+					u.Copy(&a)
 					t.Errorf("a: %v\n", u);
 					u.Add(&b)
 					t.Errorf("a+b: %v\n", u);
-					u.Dbl()
+					u.Double()
 					t.Errorf("2(a+b): %v\n", u);
 
 					// 2a + 2b
-					v.Cpy(&a)
+					v.Copy(&a)
 					t.Errorf("a: %v\n", v);
-					v.Dbl()
+					v.Double()
 					t.Errorf("2a: %v\n", v);
-					b.Dbl()
+					b.Double()
 					t.Errorf("2b: %v\n", b);
 					v.Add(&b)
 					t.Errorf("2a+2b: %v\n", v);
@@ -1526,18 +1526,18 @@ func TestSquare(t *testing.T) {
 			a.FromUint64(mod, _a)
 
 			// a^2
-			u.Cpy(&a)
-			u.Sqr()
+			u.Copy(&a)
+			u.Square()
 
 			// a*a
-			v.Cpy(&a)
+			v.Copy(&a)
 			v.Mul(&a)
 
 			// a*a
-			w.Cpy(&a)
+			w.Copy(&a)
 			w.Mul(&w)
 
-			if u.Neq(&v) || u.Neq(&w) {
+			if u.NotEqual(&v) || u.NotEqual(&w) {
 				t.Errorf("%v,%v\n", i, j);
 				t.Errorf("0x%016x%016x%016x%016x^2 %% 0x%016x%016x%016x%016x\n", a.r[3], a.r[2], a.r[1], a.r[0], m[3], m[2], m[1], m[0]);
 				t.Errorf("0x%016x%016x%016x%016x\n", u.r[3], u.r[2], u.r[1], u.r[0]);
@@ -1570,33 +1570,33 @@ func TestSquare(t *testing.T) {
 				b.FromUint64(mod, _b)
 
 				// (a*b)^2
-				u.Cpy(&a).Mul(&b).Sqr()
+				u.Copy(&a).Mul(&b).Square()
 
 				// a^2 * b^2
-				v.Cpy(&a).Sqr()
-				b.Sqr()
+				v.Copy(&a).Square()
+				b.Square()
 				v.Mul(&b)
 
-				if u.Neq(&v) {
+				if u.NotEqual(&v) {
 					b.FromUint64(mod, _b)
 
 					// (a*b)^2
-					u.Cpy(&a)
+					u.Copy(&a)
 					t.Errorf("a = %v\n", u);
 					u.Mul(&b)
 					t.Errorf("ab = %v\n", u);
-					u.Sqr()
+					u.Square()
 					t.Errorf("(ab)^2 = %v\n", u);
 
 					t.Errorf("%%%v = %v\n", m, u);
 
 					// a^2 * b^2
-					v.Cpy(&a)
+					v.Copy(&a)
 					t.Errorf("a = %v\n", v);
-					v.Sqr()
+					v.Square()
 					t.Errorf("a^2 = %v\n", v);
 					t.Errorf("b = %v\n", b);
-					b.Sqr()
+					b.Square()
 					t.Errorf("b^2 = %v\n", b);
 					v.Mul(&b)
 					t.Errorf("a^2*b^2 = %v\n", v);
@@ -1633,7 +1633,7 @@ func TestExponentiation(t *testing.T) {
 	for i, _a := range test_ops {
 		a.FromUint64(mod, _a)
 
-		invertible := b.Cpy(&a).Inv()
+		invertible := b.Copy(&a).Inv()
 
 		if !invertible {
 			// nistp256 is prime, so only 0 lacks an inverse,
@@ -1650,9 +1650,9 @@ func TestExponentiation(t *testing.T) {
 		b.ExpPrecomp(&eb, nistp256)
 
 		// c = a^m
-		c.Cpy(&a).Exp(nistp256)
+		c.Copy(&a).Exp(nistp256)
 
-		if a.Neq(&b) || a.Neq(&c) {
+		if a.NotEqual(&b) || a.NotEqual(&c) {
 			t.Errorf("%v", i)
 			t.Errorf("0X%016X%016X%016X%016X\n",
 				a.r[3], a.r[2], a.r[1], a.r[0])
@@ -1677,11 +1677,11 @@ var (
 
 func BenchmarkMod256(b *testing.B) {
 	b.Run("Neg", benchmarkNeg)
-	b.Run("Dbl", benchmarkDbl)
+	b.Run("Double", benchmarkDouble)
 	b.Run("Sub", benchmarkSub)
 	b.Run("Add", benchmarkAdd)
 
-	b.Run("Sqr", benchmarkSqr)
+	b.Run("Square", benchmarkSquare)
 	b.Run("Mul", benchmarkMul)
 	b.Run("Inv", benchmarkInv)
 	b.Run("Exp", benchmarkExp)
@@ -1702,7 +1702,7 @@ func benchmarkNeg(b *testing.B) {
 	}
 }
 
-func benchmarkDbl(b *testing.B) {
+func benchmarkDouble(b *testing.B) {
 	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
@@ -1711,8 +1711,8 @@ func benchmarkDbl(b *testing.B) {
 	//b.ResetTimer()
 
 	for i := 0; i < b.N; i+=2 {
-		x.Dbl()
-		y.Dbl()
+		x.Double()
+		y.Double()
 	}
 }
 
@@ -1744,7 +1744,7 @@ func benchmarkAdd(b *testing.B) {
 	}
 }
 
-func benchmarkSqr(b *testing.B) {
+func benchmarkSquare(b *testing.B) {
 	m, _ := NewModulusFromUint64(nistp256)
 
 	x.FromUint64(m, [4]uint64{257, 479, 487, 491})
@@ -1753,8 +1753,8 @@ func benchmarkSqr(b *testing.B) {
 	//b.ResetTimer()
 
 	for i := 0; i < b.N; i+=2 {
-		x.Sqr()
-		y.Sqr()
+		x.Square()
+		y.Square()
 	}
 }
 

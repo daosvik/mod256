@@ -11,7 +11,7 @@ import (
 // Mul computes the product of two residues.
 func (z *Residue) Mul(x *Residue) *Residue {
 	if z == x {
-		return z.Sqr()
+		return z.Square()
 	}
 
 	if z.m != x.m {
