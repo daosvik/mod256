@@ -13,8 +13,8 @@ import (
 type Modulus struct {
 	m    [4]uint64 // modulus
 	mu   [5]uint64 // reciprocal
-	mmu0 [4]uint64 // (m*mu + 0*m)
-	mmu1 [4]uint64 // (m*mu + 1*m) % 2^256
+	mmu0 [4]uint64 // m*(mu/2^256 + 0)
+	mmu1 [4]uint64 // m*(mu/2^256 + 1) % 2^256
 }
 
 // NewModulusFromUint64 creates a new modulus object from a little-endian array of uint64.

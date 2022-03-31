@@ -34,8 +34,8 @@ func mmu1(z *Modulus) {
 	z.mmu1[2], c = Add64(z.mmu0[2], z.m[2], c)
 	z.mmu1[3], c = Add64(z.mmu0[3], z.m[3], c)
 
-	// mmu0 is the largest positive integer x such that x*m < 2^512
-	// mmu1 is the smallest positive integer y such that y*m >= 2^512
+	// mmu0 is the largest multiple of m such that mmu0 < 2^256
+	// mmu1 is the smallest multiple of m such that mmu1 >= 2^256
 	// => there must be a carry out from the addition above
 
 	if c != 1 {
