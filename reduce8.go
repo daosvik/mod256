@@ -114,38 +114,19 @@ func (z *Residue) reduce8(x [8]uint64) *Residue {
 	r1, b = Sub64(x1, r1, b)
 	r2, b = Sub64(x2, r2, b)
 	r3, b = Sub64(x3, r3, b)
-	r4, b = Sub64(x4, r4, b)
+	r4, _ = Sub64(x4, r4, b)
 
-	// if r<0 then r+=m
-
-	x0, c = Add64(r0, m[0], 0)
-	x1, c = Add64(r1, m[1], c)
-	x2, c = Add64(r2, m[2], c)
-	x3, c = Add64(r3, m[3], c)
-	x4, _ = Add64(r4, 0, c)
-
-	// commit if borrow
-	if b != 0 {
-		r4, r3, r2, r1, r0 = x4, x3, x2, x1, x0
-	}
-
-	// incomplete reduction is possible if m < 2^256/3
-	if m[3] < 0x5555555555555555 {
+	if r4 == 0 {
 		z.r[3], z.r[2], z.r[1], z.r[0] = r3, r2, r1, r0
 		return z
 	}
 
 	// q = r - m
-	x0, b = Sub64(r0, m[0], 0)
-	x1, b = Sub64(r1, m[1], b)
-	x2, b = Sub64(r2, m[2], b)
-	x3, b = Sub64(r3, m[3], b)
-	x4, b = Sub64(r4,    0, b)
-
-	// commit if no borrow
-	if b == 0 {
-		r4, r3, r2, r1, r0 = x4, x3, x2, x1, x0
-	}
+	r0, b = Sub64(r0, m[0], 0)
+	r1, b = Sub64(r1, m[1], b)
+	r2, b = Sub64(r2, m[2], b)
+	r3, b = Sub64(r3, m[3], b)
+	r4, b = Sub64(r4,    0, b)
 
 	// q = r - m
 	x0, b = Sub64(r0, m[0], 0)
